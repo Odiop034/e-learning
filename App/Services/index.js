@@ -11,22 +11,23 @@ const client = new ApolloClient({
 export const getCourseList = async (level) => {
   const query = gql`
     query CourseList {
-      courses(where: {courseLevel: Basic}) {
-        id
-        name
-        price
-        courseLevel
-        tags
-        time
-        author
-        banner {
-          url
-        }
-        chapters {
-          id
-        }
-      }
+  courses(where: {level: Advance}) {
+    id
+    name
+    level
+    price
+    tags
+    time
+    banner {
+      url
     }
+    chapters {
+      id
+    }
+    author
+  }
+}
+
   `;
 
   try {

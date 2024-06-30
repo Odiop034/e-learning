@@ -5,14 +5,14 @@ import SubHeading from "./SubHeading";
 import Colors from "../../Utils/Colors";
 import { Ionicons } from "@expo/vector-icons";
 
-export default function CourseList({ courseLevel }) {
+export default function CourseList({level}) {
   const [courseList, setCourseList] = useState([]);
   useEffect(() => {
     getCourses();
   }, []);
 
   const getCourses = () => {
-    getCourseList(courseLevel).then((resp) => {
+    getCourseList(level).then(resp => {
       console.log("RESP--", resp);
       setCourseList(resp?.courses);
     });
@@ -20,7 +20,7 @@ export default function CourseList({ courseLevel }) {
 
   return (
     <View>
-      <SubHeading text={courseLevel+" Courses "} />
+      <SubHeading text={level +" Courses "} />
       <FlatList
         data={courseList}
         key={courseList.id}
@@ -36,7 +36,7 @@ export default function CourseList({ courseLevel }) {
             }}
           >
             <Image
-              source={{ uri: item?.banner.url }}
+              source={{ uri: item?.banner?.url }}
               style={{ width: 210, height: 120, borderRadius: 15 }}
             />
             <View style={{ padding: 7 }}>
