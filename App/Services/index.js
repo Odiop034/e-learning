@@ -18,12 +18,25 @@ export const getCourseList = async (level) => {
         price
         tags
         time
+        description {
+          markdown
+       }
         banner {
           url
         }
-        chapters {
-          id
+           chapters {
+      content {
+        heading
+        description {
+          markdown
         }
+        output {
+          markdown
+        }
+        id
+      }
+      title
+    }
         author
       }
     }
