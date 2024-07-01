@@ -10,31 +10,32 @@ const client = new ApolloClient({
 
 export const getCourseList = async (level) => {
   const query = gql`
-    query CourseList {
-  courses(where: {level: Advance}) {
-    id
-    name
-    level
-    price
-    tags
-    time
-    banner {
-      url
+    query CourseList($level: Level!) {
+      courses(where: { level: $level }) {
+        id
+        name
+        level
+        price
+        tags
+        time
+        banner {
+          url
+        }
+        chapters {
+          id
+        }
+        author
+      }
     }
-    chapters {
-      id
-    }
-    author
-  }
-}
-
   `;
 
+  const variables = { level };
+
   try {
-    const { data } = await client.query({ query });
-    return data;
+    const { data } = await client.query({ query, variables });
+    return data.courses;
   } catch (error) {
-    console.error('Error in getCourseList:', error);
+    console.error('Error in getCourseList:', error.networkError?.result || error);
     throw error;
   }
 };

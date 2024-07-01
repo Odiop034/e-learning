@@ -5,25 +5,28 @@ import SubHeading from "./SubHeading";
 import Colors from "../../Utils/Colors";
 import { Ionicons } from "@expo/vector-icons";
 
-export default function CourseList({level}) {
+export default function CourseList({ level }) {
   const [courseList, setCourseList] = useState([]);
+
   useEffect(() => {
     getCourses();
-  }, []);
+  }, [level]);
 
   const getCourses = () => {
     getCourseList(level).then(resp => {
       console.log("RESP--", resp);
-      setCourseList(resp?.courses);
+      setCourseList(resp);
+    }).catch(error => {
+      console.error('Error fetching courses:', error);
     });
   };
 
   return (
     <View>
-      <SubHeading text={level +" Courses "} />
+      <SubHeading text={level + " Courses "} color={level=='Basic'&&Colors.WHITE}/>
       <FlatList
         data={courseList}
-        key={courseList.id}
+        keyExtractor={(item) => item.id}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         renderItem={({ item }) => (
@@ -49,41 +52,36 @@ export default function CourseList({level}) {
                 {item.name}
               </Text>
               <View style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}>
+                <View style={{
                   display: "flex",
                   flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <View style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    gap: 5,
-                    marginTop: 5,
-                  }}
-                >
+                  alignItems: "center",
+                  gap: 5,
+                  marginTop: 5,
+                }}>
                   <Ionicons name="book-outline" size={18} color="black" />
-                  <Text style={{fontFamily:'outfit'}}>{item?.chapters?.length} Chapitres </Text>
+                  <Text style={{ fontFamily: 'outfit' }}>{item?.chapters?.length} Chapitres </Text>
                 </View>
-                  <View style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        alignItems: "center",
-                        gap: 5,
-                        marginTop: 5,
-                  }}
-                  >
-                    <Ionicons name="time-outline" size={18} color="black" />
-                    <Text style={{fontFamily:'outfit'}}>{item?.time} </Text>
-                  </View>
+                <View style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: 5,
+                  marginTop: 5,
+                }}>
+                  <Ionicons name="time-outline" size={18} color="black" />
+                  <Text style={{ fontFamily: 'outfit' }}>{item?.time} </Text>
                 </View>
-                <Text style={{marginTop:5,
-                  color:Colors.PRIMARY,
-                  fontFamily:'outfit-medium'
-                }}>{item.price==0?'Gratuit':item.price}</Text>
               </View>
+              <Text style={{ marginTop: 5, color: Colors.PRIMARY, fontFamily: 'outfit-medium' }}>
+                {item.price == 0 ? 'Gratuit' : item.price}
+              </Text>
             </View>
-          
+          </View>
         )}
       />
     </View>
